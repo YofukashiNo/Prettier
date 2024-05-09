@@ -1,0 +1,22 @@
+{
+    "id":  "dev.yofukashino.Prettier",
+    "name":  "Prettier",
+    "description":  "Automatically formats codeblocks using prettier",
+    "author":  {
+                   "discordID":  "1121961711080050780",
+                   "name":  "Nanakusa",
+                   "github":  "YofukashiNo"
+               },
+    "version":  "1.0.0",
+    "updater":  {
+                    "id":  "YofukashiNo/Prettier",
+                    "type":  "github"
+                },
+    "license":  "MIT",
+    "type":  "replugged-plugin",
+    "renderer":  "src/index.ts",
+    "source":  "https://github.com/YofukashiNo/Prettier",
+    "image":  [
+                  "https://i.imgur.com/14CNs3a.png?CHANGE-THIS-URL"
+              ]
+}
