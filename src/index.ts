@@ -5,7 +5,7 @@ export const PluginInjector = new Injector();
 export const PluginLogger = Logger.plugin("Prettier", "#b380ff");
 export const SettingValues = await settings.init("dev.yofukashino.Prettier", defaultSettings);
 import Settings from "./Components/Settings";
-import Injections from "./patches/index";
+import Injections from "./injections/index";
 
 export const start = (): void => {
   Settings.registerSettings();

@@ -1,7 +1,7 @@
 import { settings, util } from "replugged";
 import { React, lodash } from "replugged/common";
 import Pretter, { Options } from "prettier";
-import { PluginLogger, SettingValues } from "../index";
+import { PluginLogger, SettingValues, PluginInjector } from "../index";
 import { defaultSettings, prettierPlugins } from "./consts";
 import Types from "../types";
 
@@ -26,6 +26,17 @@ export class LimitedMap<K, V> extends Map<K, V> {
 }
 
 export const codeblockCache = new LimitedMap<string, Types.CodeBlockOptions>(150);
+
+export const forceRerenderElement = async (selector: string): Promise<void> => {
+  const element = await util.waitFor(selector);
+  if (!element) return;
+  const ownerInstance = util.getOwnerInstance(element);
+  const unpatchRender = PluginInjector.instead(ownerInstance, "render", () => {
+    unpatchRender();
+    return null;
+  });
+  ownerInstance.forceUpdate(() => ownerInstance.forceUpdate(() => {}));
+};
 
 export const convertToTitleCase = (text: string): string =>
   text
@@ -102,6 +113,7 @@ export const formatCode = async (lang: string, code: string): Promise<string> =>
 
 export const formatCodeblock = (
   codeBlockOptions: Types.CodeBlockOptions,
+  messageSelector?: string,
 ): Types.CodeBlockOptions => {
   if (!SettingValues.get("autoFormat", defaultSettings.autoFormat) || !codeBlockOptions.lang)
     return codeBlockOptions;
@@ -113,8 +125,10 @@ export const formatCodeblock = (
   void formatCode(codeBlockOptions.lang, codeBlockOptions.content).then((content) => {
     codeBlockOptions.content = content;
     codeblockCache.set(key, codeBlockOptions);
+    if (messageSelector) forceRerenderElement(messageSelector);
   });
   codeblockCache.set(key, codeBlockOptions);
+
   return codeBlockOptions;
 };
 
