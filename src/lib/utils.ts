@@ -1,7 +1,7 @@
 import { settings, util } from "replugged";
 import { React, lodash } from "replugged/common";
 import Pretter, { Options } from "prettier";
-import { PluginLogger, SettingValues, PluginInjector } from "../index";
+import { PluginInjector, PluginLogger, SettingValues } from "../index";
 import { defaultSettings, prettierPlugins } from "./consts";
 import Types from "../types";
 
@@ -125,7 +125,7 @@ export const formatCodeblock = (
   void formatCode(codeBlockOptions.lang, codeBlockOptions.content).then((content) => {
     codeBlockOptions.content = content;
     codeblockCache.set(key, codeBlockOptions);
-    if (messageSelector) forceRerenderElement(messageSelector);
+    if (messageSelector) void forceRerenderElement(messageSelector);
   });
   codeblockCache.set(key, codeBlockOptions);
 
